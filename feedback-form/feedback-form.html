@@ -1,36 +1,22 @@
-  <script>
-    document.getElementById("feedbackForm").addEventListener("submit", async function(e) {
-      e.preventDefault();
+<div class="kaarya-feedback-container">
+  <h2 class="kaarya-title">We value your feedback</h2>
 
-      const data = {
-        name: document.getElementById("name").value.trim(),
-        email: document.getElementById("email").value.trim(),
-        mobile: document.getElementById("mobile").value.trim(),
-        feedback: document.getElementById("feedback").value.trim()
-      };
+  <form id="feedbackForm" class="kaarya-form">
+    <label class="kaarya-label">Name</label>
+    <input type="text" id="name" class="kaarya-input" placeholder="Your name">
 
-      try {
-        const res = await fetch("/add-feedback", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(data)
-        });
+    <label class="kaarya-label">Email</label>
+    <input type="email" id="email" class="kaarya-input" placeholder="Your email">
 
-        if (!res.ok) {
-          const err = await res.json().catch(()=>({message: "Server error"}));
-          alert("Error: " + (err.message || "Submit failed"));
-          return;
-        }
+    <label class="kaarya-label">Feedback</label>
+    <textarea id="message" class="kaarya-textarea" placeholder="Write your feedback..."></textarea>
 
-        const result = await res.json();
-        alert(result.message || "Feedback submitted successfully!");
-        // optional: reset form
-        document.getElementById("feedbackForm").reset();
-      } catch (err) {
-        console.error("Network error:", err);
-        alert("Network error — make sure the server is running.");
-      }
-    });
-  </script>
-</body>
-</html>
+    <div class="kaarya-emoji-container">
+      <span class="kaarya-emoji">😊</span>
+      <span class="kaarya-emoji">😐</span>
+      <span class="kaarya-emoji">😞</span>
+    </div>
+
+    <button type="submit" class="kaarya-button">Submit</button>
+  </form>
+</div>
