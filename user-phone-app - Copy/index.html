@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Form</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    form { margin-bottom: 20px; }
+    input { margin: 5px; padding: 5px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+  </style>
+</head>
+<body>
+  <h2>Enter Details</h2>
+  <form id="userForm" style="display: flex; align-items: center; gap: 10px;">
+    <input type="text" id="name" placeholder="Enter Name" required />
+    <input type="tel" id="mobile" placeholder="Enter Mobile Number" required />
+    <button type="submit">Submit</button>
+    <span id="formMessage" style="margin-left: 10px; color: #d32f2f;"></span>
+  </form>
+
+  <h3>User Details</h3>
+  <table id="userTable">
+    <thead>
+      <tr><th>Name</th><th>Mobile Number</th></tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    const form = document.getElementById("userForm");
+    const tableBody = document.querySelector("#userTable tbody");
+
+    // Display users from backend
+    async function loadUsers() {
+      const res = await fetch("/users");
+      const data = await res.json();
+      tableBody.innerHTML = "";
+      data.forEach(user => {
+        const row = tableBody.insertRow();
+        row.insertCell(0).textContent = user.name;
+        row.insertCell(1).textContent = user.mobile;
+      });
+    }
+
+    // Add new user
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("name").value;
+      const mobile = document.getElementById("mobile").value;
+      const messageEl = document.getElementById("formMessage");
+      messageEl.textContent = "";
+      messageEl.style.color = "#d32f2f";
+      try {
+        const res = await fetch("/add-user", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, mobile }),
+        });
+        const result = await res.json();
+        if (res.ok && result.success) {
+          messageEl.textContent = "User added successfully!";
+          messageEl.style.color = "#388e3c";
+          form.reset();
+          loadUsers();
+        } else {
+          messageEl.textContent = result.message || "Failed to add user.";
+        }
+      } catch (err) {
+        messageEl.textContent = "Server error. Please try again.";
+      }
+    });
+
+    loadUsers();
+  </script>
+</body>
+</html>

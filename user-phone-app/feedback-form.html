@@ -1,76 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Feedback Form</title>
-    <style>
-        /* Kaaarya-inspired design */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f5f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-        }
-        .container {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 16px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
-            width: 380px;
-            text-align: center;
-        }
-        h1 {
-            color: #111827;
-            margin-bottom: 30px;
-            font-size: 24px;
-            font-weight: 600;
-        }
-        input {
-            width: 100%;
-            padding: 14px;
-            margin-bottom: 20px;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: border-color 0.3s;
-        }
-        input:focus {
-            border-color: #3b82f6;
-            outline: none;
-        }
-        button {
-            width: 100%;
-            padding: 14px;
-            background-color: #3b82f6;
-            color: #ffffff;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #2563eb;
-        }
-        .note {
-            font-size: 13px;
-            color: #6b7280;
-            margin-top: 12px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kaaarya Feedback Form</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e3f2fd, #f0f7ff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .feedback-container {
+      background: #ffffff;
+      padding: 40px 45px;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 380px;
+      transition: all 0.3s ease;
+    }
+
+    .feedback-container:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    }
+
+    h2 {
+      text-align: center;
+      color: #0a2342;
+      margin-bottom: 25px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    label {
+      font-weight: 500;
+      color: #1a1a1a;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1.5px solid #d0d7e2;
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #0078d7;
+      box-shadow: 0 0 0 2px rgba(0, 120, 215, 0.15);
+      outline: none;
+    }
+
+    button {
+      width: 100%;
+      background: linear-gradient(135deg, #0078d7, #005fa3);
+      color: #ffffff;
+      font-weight: 600;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 15px;
+      letter-spacing: 0.4px;
+      transition: all 0.25s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0066c0, #004c8b);
+      box-shadow: 0 6px 14px rgba(0, 120, 215, 0.25);
+      transform: translateY(-1px);
+    }
+
+    .footer-note {
+      text-align: center;
+      font-size: 12px;
+      color: #555;
+      margin-top: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Feedback Form</h1>
-        <form action="/add-user" method="POST">
-            <input type="text" name="name" placeholder="Your Name" required>
-            <input type="email" name="email" placeholder="Your Gmail" required>
-            <button type="submit">Submit</button>
-        </form>
-        <p class="note">We respect your privacy. Your data is safe.</p>
-    </div>
+  <div class="feedback-container">
+    <h2>Feedback Form</h2>
+    <form id="feedbackForm">
+      <label for="name">Name</label>
+      <input type="text" id="name" name="name" placeholder="Enter your name" required />
+
+      <label for="email">Email</label>
+      <input type="email" id="email" name="email" placeholder="Enter your email" required />
+
+      <label for="mobile">Phone Number</label>
+      <input type="tel" id="mobile" name="mobile" placeholder="Enter your phone number" required />
+
+      <label for="feedback">Feedback</label>
+      <textarea id="feedback" name="feedback" rows="4" placeholder="Enter your feedback"></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+    <p class="footer-note">Designed with ❤️ for Kaaarya</p>
+  </div>
+
+  <script>
+    document.getElementById("feedbackForm").addEventListener("submit", function(e) {
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const mobile = document.getElementById("mobile").value.trim();
+
+      if (!name || !email || !mobile) {
+        alert("Please fill all required fields (Name, Email, and Phone Number).");
+        e.preventDefault();
+        return;
+      }
+
+      alert("Feedback submitted successfully!");
+    });
+  </script>
 </body>
 </html>
