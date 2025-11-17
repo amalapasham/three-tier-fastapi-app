@@ -5,183 +5,73 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Feedback Form</title>
   <style>
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: #f5f7fb;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-    }
-
-    .container {
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      width: 350px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-      color: #1a1a1a;
-    }
-
-    input, textarea, select {
-      width: 100%;
-      margin-bottom: 12px;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
-
-    textarea {
-      resize: none;
-      height: 70px;
-    }
-
-    .emoji-container {
-      margin: 15px 0 10px 0;
-      padding: 10px 0;
-    }
-
-    .emoji {
-      font-size: 28px;
-      cursor: pointer;
-      margin: 0 6px;
-      transition: transform 0.2s ease;
-      display: inline-block;
-    }
-
-    .emoji:hover {
-      transform: scale(1.2);
-    }
-
-    .emoji.selected {
-      transform: scale(1.3);
-      background-color: #e6f2ff;
-      border-radius: 50%;
-      padding: 5px;
-    }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      background-color: #0066ff;
-      color: #fff;
-      font-size: 15px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s ease;
-      margin-top: 8px;
-    }
-
-    button:hover {
-      background-color: #0052cc;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
-    }
-
-    .success {
-      display: none;
-      color: green;
-      margin-top: 15px;
-      font-weight: 600;
-      padding: 10px;
-      background-color: #f0fff0;
-      border-radius: 8px;
-    }
+    /* Same CSS code */
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f7fb; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+    .container { background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+    h2 { margin-bottom: 20px; color: #1a1a1a; }
+    input, textarea, select { width: 100%; margin-bottom: 12px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; font-size: 14px; box-sizing: border-box; }
+    textarea { resize: none; height: 70px; }
+    .emoji-container { margin: 15px 0 10px 0; padding: 10px 0; }
+    .emoji { font-size: 28px; cursor: pointer; margin: 0 6px; transition: transform 0.2s ease; display: inline-block; }
+    .emoji:hover { transform: scale(1.2); }
+    .emoji.selected { transform: scale(1.3); background-color: #e6f2ff; border-radius: 50%; padding: 5px; }
+    button { width: 100%; padding: 12px; border: none; background-color: #0066ff; color: #fff; font-size: 15px; border-radius: 8px; cursor: pointer; transition: background 0.3s ease; margin-top: 8px; }
+    button:hover { background-color: #0052cc; transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3); }
+    .success { display: none; color: green; margin-top: 15px; font-weight: 600; padding: 10px; background-color: #f0fff0; border-radius: 8px; }
   </style>
 </head>
 <body>
   <div class="container">
     <h2>Feedback Form</h2>
+    
+    <!-- FORM SUBMIT DIRECT -->
+    <form action="https://formsubmit.co/amalap11413@gmail.com" method="POST">
+      <input type="text" name="name" placeholder="Your Name" required />
+      <input type="email" name="email" placeholder="Your Email" required />
+      <input type="tel" name="mobile" placeholder="Your Mobile Number" required />
+      
+      <select name="type" required>
+        <option value="">-- Select Feedback Type --</option>
+        <option value="feature">Feature</option>
+        <option value="bug">Bug</option>
+        <option value="suggestion">Suggestion</option>
+        <option value="compliment">Compliment</option>
+      </select>
 
-    <input type="text" id="name" placeholder="Your Name" required />
-    <input type="email" id="email" placeholder="Your Email" required />
-    <input type="tel" id="mobile" placeholder="Your Mobile Number" required />
+      <textarea name="comments" placeholder="Your comments..." required></textarea>
 
-    <select id="type" required>
-      <option value="">-- Select Feedback Type --</option>
-      <option value="feature">Feature</option>
-      <option value="bug">Bug</option>
-      <option value="suggestion">Suggestion</option>
-      <option value="compliment">Compliment</option>
-    </select>
+      <div class="emoji-container">
+        <p style="margin: 0 0 8px 0; color: #555;">How was your experience?</p>
+        <span class="emoji">😊</span>
+        <span class="emoji">😐</span>
+        <span class="emoji">😞</span>
+      </div>
 
-    <textarea id="comments" placeholder="Your comments..." required></textarea>
-
-    <div class="emoji-container">
-      <p style="margin: 0 0 8px 0; color: #555;">How was your experience?</p>
-      <span class="emoji">😊</span>
-      <span class="emoji">😐</span>
-      <span class="emoji">😞</span>
-    </div>
-
-    <button id="submitBtn">Submit</button>
-    <p class="success" id="successMessage">✅ Feedback submitted successfully!</p>
+      <input type="hidden" name="_captcha" value="false">
+      <input type="hidden" name="_subject" value="New Feedback!">
+      
+      <button type="submit">Submit</button>
+      <p class="success" id="successMessage">✅ Feedback submitted successfully!</p>
+    </form>
   </div>
 
   <script>
+    // Emoji selection
     const emojis = document.querySelectorAll('.emoji');
     emojis.forEach(e => {
       e.addEventListener('click', () => {
-        emojis.forEach(el => {
-          el.classList.remove('selected');
-        });
+        emojis.forEach(el => el.classList.remove('selected'));
         e.classList.add('selected');
       });
     });
 
-    document.getElementById('submitBtn').addEventListener('click', () => {
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const mobile = document.getElementById('mobile').value.trim();
-      const type = document.getElementById('type').value;
-      const comments = document.getElementById('comments').value.trim();
-      const selectedEmoji = document.querySelector('.emoji.selected');
-
-      const namePattern = /^[A-Za-z ]+$/;
-      const emailPattern = /^[^ ]+@[^ ]+\.[^\s@]+$/;
-      const mobilePattern = /^[0-9]{10}$/;
-
-      if (!name || !email || !mobile || !comments || !selectedEmoji || !type) {
-        alert('Please fill all fields, select feedback type, and choose an emoji.');
-        return;
-      }
-
-      if (!namePattern.test(name)) {
-        alert('Please enter a valid name (letters only).');
-        return;
-      }
-
-      if (!emailPattern.test(email)) {
-        alert('Please enter a valid email address.');
-        return;
-      }
-
-      if (!mobilePattern.test(mobile)) {
-        alert('Please enter a valid 10-digit mobile number.');
-        return;
-      }
-
+    // Form success message
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
       document.getElementById('successMessage').style.display = 'block';
-
-      document.getElementById('name').value = '';
-      document.getElementById('email').value = '';
-      document.getElementById('mobile').value = '';
-      document.getElementById('type').value = '';
-      document.getElementById('comments').value = '';
-      selectedEmoji.classList.remove('selected');
-
       setTimeout(() => {
-        document.getElementById('successMessage').style.display = 'none';
-      }, 3000);
+        this.submit(); // Actual form submit
+      }, 1000);
     });
   </script>
 </body>
