@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amala's Three-Tier App</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: #f0f8ff; }
+        .container { max-width: 800px; margin: 0 auto; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        button { 
+            padding: 10px 15px; 
+            margin: 5px; 
+            cursor: pointer; 
+            background: #2196F3; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            font-size: 14px;
+        }
+        button:hover { 
+            background: #1976D2; 
+            transform: translateY(-2px);
+            transition: all 0.3s;
+        }
+        .result { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            margin: 10px 0; 
+            border-radius: 5px; 
+            border-left: 4px solid #2196F3;
+        }
+        h1 { color: #2c3e50; }
+        
+        /* Popup Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.3);
+        }
+        .input-group { 
+            margin: 15px 0; 
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: bold;
+            color: #333;
+        }
+        input { 
+            padding: 10px; 
+            width: 100%; 
+            border: 1px solid #ddd; 
+            border-radius: 4px; 
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        .modal-buttons {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .cancel-btn {
+            background: #f44336;
+            margin-right: 10px;
+        }
+        .cancel-btn:hover {
+            background: #d32f2f;
+        }
+        .create-btn {
+            background: #4CAF50;
+        }
+        .create-btn:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Amala Pasham's Three-Tier Application</h1>
+        <p><strong>Python 3.14.0 + FastAPI + SQLite</strong></p>
+
+        <div>
+            <button onclick="testAPI()">Test API</button>
+            <button onclick="getAbout()">Get About Info</button>
+            <button onclick="showCreateUserModal()">Create User</button>
+            <button onclick="getUsers()">Get Users</button>
+            <button onclick="clearAmalaUsers()">Delete Amala Users</button>
+        </div>
+
+        <div id="results" class="result">
+            <p>Click "Create User" to add new users with popup form!</p>
+        </div>
+    </div>
+
+    <!-- Create User Popup Modal -->
+    <div id="createUserModal" class="modal">
+        <div class="modal-content">
+            <h2>Create New User</h2>
+            <div class="input-group">
+                <label for="newUserName">Name:</label>
+                <input type="text" id="newUserName" placeholder="Enter name" value="amalap">
+            </div>
+            <div class="input-group">
+                <label for="newUserEmail">Email:</label>
+                <input type="email" id="newUserEmail" placeholder="Enter email" value="amalap11413@gmail.com">
+            </div>
+            <div class="modal-buttons">
+                <button class="cancel-btn" onclick="closeCreateUserModal()">Cancel</button>
+                <button class="create-btn" onclick="createUser()">Create User</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        // Modal Functions
+        function showCreateUserModal() {
+            document.getElementById('createUserModal').style.display = 'flex';
+        }
+
+        function closeCreateUserModal() {
+            document.getElementById('createUserModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('createUserModal');
+            if (event.target === modal) {
+                closeCreateUserModal();
+            }
+        }
+
+        async function testAPI() {
+            try {
+                const response = await fetch(API_BASE);
+                const data = await response.json();
+                showResult('✅ API Response:', data);
+            } catch (error) {
+                showResult('❌ Error:', error.message);
+            }
+        }
+
+        async function getAbout() {
+            try {
+                const response = await fetch(`${API_BASE}/about`);
+                const data = await response.json();
+                showResult('👩‍💻 About Amala:', data);
+            } catch (error) {
+                showResult('❌ Error:', error.message);
+            }
+        }
+
+        async function createUser() {
+            try {
+                const name = document.getElementById('newUserName').value;
+                const email = document.getElementById('newUserEmail').value;
+                
+                if (!name || !email) {
+                    showResult('❌ Error:', 'Please enter both name and email');
+                    return;
+                }
+                
+                // First check how many users exist
+                const usersResponse = await fetch(`${API_BASE}/users/`);
+                const existingUsers = await usersResponse.json();
+                
+                // Limit to maximum 5 users
+                if (existingUsers.length >= 5) {
+                    showResult('❌ Limit Reached:', 'Maximum 5 users allowed. Delete some users first.');
+                    closeCreateUserModal();
+                    return;
+                }
+                
+                const response = await fetch(`${API_BASE}/users/?name=${name}&email=${email}`, {
+                    method: 'POST'
+                });
+                const data = await response.json();
+                
+                showResult('✅ User Created:', data);
+                closeCreateUserModal();
+                
+            } catch (error) {
+                showResult('❌ Error:', error.message);
+            }
+        }
+
+        async function getUsers() {
+            try {
+                const response = await fetch(`${API_BASE}/users/`);
+                const data = await response.json();
+                showResult('📋 All Users in Database:', data);
+            } catch (error) {
+                showResult('❌ Error:', error.message);
+            }
+        }
+
+        async function clearAmalaUsers() {
+            try {
+                const deleteResponse = await fetch(`${API_BASE}/delete-amala-users/`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await deleteResponse.json();
+                showResult('🗑️ Amala Users Deleted:', result);
+                
+            } catch (error) {
+                showResult('❌ Error:', error.message);
+            }
+        }
+
+        function showResult(title, data) {
+            document.getElementById('results').innerHTML = 
+                `<h3>${title}</h3><pre>${JSON.stringify(data, null, 2)}</pre>`;
+        }
+    </script>
+</body>
+</html>
